@@ -52,16 +52,22 @@ const fieldNames = {
   LAST_NAME: 'lastName',
   EMAIL: 'email',
   PASSWORD: 'password',
-  PASSWORD2: 'password2'
+  PASSWORD2: 'password2',
+  PARTNER_FIRST_NAME: 'partnerFirstName',
+  PARTNER_LAST_NAME: 'partnerLastName',
+  PARTNER_EMAIL: 'partnerEmail'
 }
 
 function validate(value, fieldName, formValues = {}) {
   switch (fieldName) {
     case fieldNames.FIRST_NAME:
+    case fieldNames.PARTNER_FIRST_NAME:
       return isValidName(value);
     case fieldNames.LAST_NAME:
+    case fieldNames.PARTNER_LAST_NAME:
       return isValidName(value);
     case fieldNames.EMAIL:
+    case fieldNames.PARTNER_EMAIL:
       return isValidEmail(value);
     case fieldNames.PASSWORD2:
       return !isEqualPassword(value, formValues[fieldNames.PASSWORD].value)
@@ -114,7 +120,6 @@ export default function SignUp() {
   
 
   const [formValues, setFormValues] = useState(getInitialFormValues());
-
   const handleChange = (e) => {
     const {name, value} = e.target;
     setFormValues(previousFormValues => {
@@ -251,30 +256,37 @@ return (
               <Grid item xs={12} sm={6}>
                 <TextField
                   //autoComplete="given-name"
-
-                  name="secondfirstName"
                   fullWidth
-                  id="secondfirstName"
+                  id="partnerFirstName"
+                  name="partnerFirstName"
                   label="First Name"
+                  onChange={handleChange}
+                  error={formValues[fieldNames.PARTNER_FIRST_NAME].error}
+                  helperText={formValues[fieldNames.PARTNER_FIRST_NAME].error && 'Invalid first name'}
                   //autoFocus
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
                   fullWidth
-                  id="secondlastName"
+                  id="partnerLastName"
+                  name="partnerLastName"
                   label="Last Name"
-                  name="secondlastName"
+                  onChange={handleChange}
+                  error={formValues[fieldNames.PARTNER_LAST_NAME].error}
+                  helperText={formValues[fieldNames.PARTNER_LAST_NAME].error && 'Invalid last name'}
                 //autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
                 <TextField
-
                   fullWidth
-                  id="secondemail"
+                  id="partnerEmail"
+                  name="partnerEmail"
                   label="Email Address"
-                  name="secondemail"
+                  onChange={handleChange}
+                  error={formValues[fieldNames.PARTNER_EMAIL].error}
+                  helperText={formValues[fieldNames.PARTNER_EMAIL].error && 'Invalid email'}
                 //autoComplete="email"
                 />
               </Grid>
