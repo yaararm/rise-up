@@ -35,61 +35,100 @@ function Copyright(props) {
 const theme = createTheme();
 
 
+function isValidEmail(email) {
+  return !/\S+@\S+\.\S+/.test(email);
+}
+
+function isEqualPassword(ps1,ps2){
+  return ps1 === ps2;
+}
+
+function isValidName(name) {
+  return !/^[A-Za-z]+$/.test(name);
+}
+
+const fieldNames = {
+  FIRST_NAME: 'firstName',
+  LAST_NAME: 'lastName',
+  EMAIL: 'email',
+  PASSWORD: 'password',
+  PASSWORD2: 'password2'
+}
+
+function validate(value, fieldName, formValues = {}) {
+  switch (fieldName) {
+    case fieldNames.FIRST_NAME:
+      return isValidName(value);
+    case fieldNames.LAST_NAME:
+      return isValidName(value);
+    case fieldNames.EMAIL:
+      return isValidEmail(value);
+    case fieldNames.PASSWORD2:
+      return !isEqualPassword(value, formValues[fieldNames.PASSWORD].value)
+    default:
+      return false;
+  }
+}
+
+function getInitialFormValues() {
+  return Object.values(fieldNames).reduce((state, fieldName) => {
+    state[fieldName] = {value: '', error: false};
+    return state;
+  }, {});
+}
+
 export default function SignUp() {
 
   const onSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    if (!isValidName(data.get('firstName'))){
+    /// this need to be changed... 
+    if (!isValidName(data.get(fieldNames.FIRST_NAME))){
       console.log("first name contained numeric")
     }
 
-    if (!isValidName(data.get('lastName'))){
+    if (!isValidName(data.get(fieldNames.LAST_NAME))){
       console.log("last name contained numeric")
     }
 
-    if (!isValidEmail(data.get('email'))){
+    if (!isValidEmail(data.get(fieldNames.EMAIL))){
       console.log( "email is invalid" )
     }
 
-    if (isEqualPassword(data.get('password'),data.get('password2'))){
+    if (!isEqualPassword(data.get(fieldNames.PASSWORD),data.get(fieldNames.PASSWORD2))){
       console.log( "password not alike" )
     }
 
     console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-      password2: data.get('password2'),
-      name: data.get('firstName'),
-      lastName: data.get('lastName'),
+      email: data.get(fieldNames.EMAIL),
+      password: data.get(fieldNames.PASSWORD),
+      password2: data.get(fieldNames.PASSWORD2),
+      name: data.get(fieldNames.FIRST_NAME),
+      lastName: data.get(fieldNames.LAST_NAME),
 
     });
-  };ט
+  };
   //const [firstNameValue, setFirstName] = useState('');
   //console.log({ firstNameValue })
   
 
-  const [formValues, setFormValues] = useState({
-    firstName:{
-      value:'',
-      error:false,
-      errorMessage:'You must enter a name'
-    }})
+  const [formValues, setFormValues] = useState(getInitialFormValues());
 
-    const handleChange = (e) => {
-      const {name, value} = e.target;
-      setFormValues({
-        ...formValues,
-        [name]:{
-          ...formValues[name],
-          value
+  const handleChange = (e) => {
+    const {name, value} = e.target;
+    setFormValues(previousFormValues => {
+      const error = validate(value, name, previousFormValues);
+      return {
+      ...formValues,
+        [name]: {
+          value,
+          error
         }
-      })
-    }
+      }
+    })
+  }
 
-    //console.log({ formValues:firstName.value })
-  
 return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 10 }}>
@@ -115,7 +154,6 @@ return (
                 <TextField
                   required
                   fullWidth
-                  //value
                   id="accountName"
                   label="Account Name"
                   name="accountName"
@@ -125,7 +163,7 @@ return (
               <Grid item xs={12} sm={6}>
                 <TextField
                   autoComplete="given-name"
-                  name="firstName"
+                  name={fieldNames.FIRST_NAME}
                   required
                   fullWidth
                   id="firstName"
@@ -135,10 +173,10 @@ return (
                   //autoFocus
                   //error
 
-                  value={formValues.firstName.value}
+                  value={formValues[fieldNames.FIRST_NAME].value}
                   onChange={handleChange}
-                  error={formValues.firstName.error}
-                  helperText={formValues.firstName.error && formValues.firstName.errorMessage}
+                  error={formValues[fieldNames.FIRST_NAME].error}
+                  helperText={formValues[fieldNames.FIRST_NAME].error && 'Invalid first name'}
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -147,8 +185,12 @@ return (
                   fullWidth
                   id="lastName"
                   label="Last Name"
-                  name="lastName"
+                  name={fieldNames.LAST_NAME}
                   autoComplete="family-name"
+                  value={formValues[fieldNames.LAST_NAME].value}
+                  onChange={handleChange}
+                  error={formValues[fieldNames.LAST_NAME].error}
+                  helperText={formValues[fieldNames.LAST_NAME].error && 'Invalid last name'}
                 />
               </Grid>
               <Grid item xs={12}>
@@ -157,7 +199,11 @@ return (
                   fullWidth
                   id="email"
                   label="Email Address"
-                  name="email"
+                  name={fieldNames.EMAIL}
+                  value={formValues[fieldNames.EMAIL].value}
+                  onChange={handleChange}
+                  error={formValues[fieldNames.EMAIL].error}
+                  helperText={formValues[fieldNames.EMAIL].error && 'Invalid email'}
                 //autoComplete="email"
                 // value={value}
                 //onChange={onChange}
@@ -170,10 +216,14 @@ return (
                 <TextField
                   required
                   fullWidth
-                  name="password"
+                  name={fieldNames.PASSWORD}
                   label="Password"
                   type="password"
                   id="password"
+                  value={formValues[fieldNames.PASSWORD].value}
+                  onChange={handleChange}
+                  error={formValues[fieldNames.PASSWORD].error}
+                  helperText={formValues[fieldNames.PASSWORD].error && 'Invalid password'}
                   //autoComplete="new-password"
                 />
               </Grid>
@@ -181,10 +231,14 @@ return (
                 <TextField
                   required
                   fullWidth
-                  name="password2"
+                  name={fieldNames.PASSWORD2}
                   label="Confirm Password"
                   type="password"
                   id="password2"
+                  value={formValues[fieldNames.PASSWORD2].value}
+                  onChange={handleChange}
+                  error={formValues[fieldNames.PASSWORD2].error}
+                  helperText={formValues[fieldNames.PASSWORD2].error && "Passwords don't match"}
                   //autoComplete="new-password"
                 />
               </Grid>
@@ -268,21 +322,6 @@ return (
 
     </ThemeProvider>
   );
-
-
-
-  function isValidEmail(email) {
-    return /\S+@\S+\.\S+/.test(email);
-  }
-
-function isEqualPassword(ps1,ps2){
- return ((ps1 === ps2) === false )
-}
-
-function isValidName(name) {
-  return /^[A-Za-z]+$/.test(name);
-}
- 
 }   
 {/* <Box component="form" form onSubmit={handleSubmit(on2Submit)} mb={2}>
 <TextField
