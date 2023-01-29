@@ -4,7 +4,7 @@ import SignUp from './SignUp';
 
 function App() {
   return (
-    <div className="back" style={{ height: '100%', position: 'absolute', left: '0px', width: '100%', overflow: 'hidden'}}>
+    <div className="back" style={{ height: '100%', position: 'absolute', left: '0px', width: '100%', overflow: 'hidden', overflowY:"scroll"}}>
     <SignUp />
   </div>
   );
