@@ -1,45 +1,46 @@
-import * as React from 'react';
-import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
-import Link from '@mui/material/Link';
-import Grid from '@mui/material/Grid';
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import './SignUp.css';
+import * as React from "react";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import CssBaseline from "@mui/material/CssBaseline";
+import TextField from "@mui/material/TextField";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Checkbox from "@mui/material/Checkbox";
+import Link from "@mui/material/Link";
+import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Container from "@mui/material/Container";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "./SignUp.css";
 import { useState } from "react";
-import { useForm } from "react-hook-form"
+import { useForm } from "react-hook-form";
 //import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
-
-
-
 
 function Copyright(props) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
+    <Typography
+      variant="body2"
+      color="text.secondary"
+      align="center"
+      {...props}
+    >
+      {"Copyright © "}
       <Link color="inherit" href="https://mui.com/">
         our Rise up website
-      </Link>{' '}
+      </Link>{" "}
       {new Date().getFullYear()}
-      {'.'}
+      {"."}
     </Typography>
   );
 }
 
 const theme = createTheme();
 
-
 function isValidEmail(email) {
   return !/\S+@\S+\.\S+/.test(email);
 }
 
-function isEqualPassword(ps1,ps2){
+function isEqualPassword(ps1, ps2) {
   return ps1 === ps2;
 }
 
@@ -48,15 +49,15 @@ function isValidName(name) {
 }
 
 const fieldNames = {
-  FIRST_NAME: 'firstName',
-  LAST_NAME: 'lastName',
-  EMAIL: 'email',
-  PASSWORD: 'password',
-  PASSWORD2: 'password2',
-  PARTNER_FIRST_NAME: 'partnerFirstName',
-  PARTNER_LAST_NAME: 'partnerLastName',
-  PARTNER_EMAIL: 'partnerEmail'
-}
+  FIRST_NAME: "firstName",
+  LAST_NAME: "lastName",
+  EMAIL: "email",
+  PASSWORD: "password",
+  PASSWORD2: "password2",
+  PARTNER_FIRST_NAME: "partnerFirstName",
+  PARTNER_LAST_NAME: "partnerLastName",
+  PARTNER_EMAIL: "partnerEmail",
+};
 
 function validate(value, fieldName, formValues = {}) {
   switch (fieldName) {
@@ -70,7 +71,7 @@ function validate(value, fieldName, formValues = {}) {
     case fieldNames.PARTNER_EMAIL:
       return isValidEmail(value);
     case fieldNames.PASSWORD2:
-      return !isEqualPassword(value, formValues[fieldNames.PASSWORD].value)
+      return !isEqualPassword(value, formValues[fieldNames.PASSWORD].value);
     default:
       return false;
   }
@@ -78,32 +79,36 @@ function validate(value, fieldName, formValues = {}) {
 
 function getInitialFormValues() {
   return Object.values(fieldNames).reduce((state, fieldName) => {
-    state[fieldName] = {value: '', error: false};
+    state[fieldName] = { value: "", error: false };
     return state;
   }, {});
 }
 
 export default function SignUp() {
-
   const onSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
 
-    /// this need to be changed... 
-    if (!isValidName(data.get(fieldNames.FIRST_NAME))){
-      console.log("first name contained numeric")
+    /// this need to be changed...
+    if (!isValidName(data.get(fieldNames.FIRST_NAME))) {
+      console.log("first name contained numeric");
     }
 
-    if (!isValidName(data.get(fieldNames.LAST_NAME))){
-      console.log("last name contained numeric")
+    if (!isValidName(data.get(fieldNames.LAST_NAME))) {
+      console.log("last name contained numeric");
     }
 
-    if (!isValidEmail(data.get(fieldNames.EMAIL))){
-      console.log( "email is invalid" )
+    if (!isValidEmail(data.get(fieldNames.EMAIL))) {
+      console.log("email is invalid");
     }
 
-    if (!isEqualPassword(data.get(fieldNames.PASSWORD),data.get(fieldNames.PASSWORD2))){
-      console.log( "password not alike" )
+    if (
+      !isEqualPassword(
+        data.get(fieldNames.PASSWORD),
+        data.get(fieldNames.PASSWORD2)
+      )
+    ) {
+      console.log("password not alike");
     }
 
     console.log({
@@ -112,44 +117,45 @@ export default function SignUp() {
       password2: data.get(fieldNames.PASSWORD2),
       name: data.get(fieldNames.FIRST_NAME),
       lastName: data.get(fieldNames.LAST_NAME),
-
     });
   };
   //const [firstNameValue, setFirstName] = useState('');
   //console.log({ firstNameValue })
-  
 
   const [formValues, setFormValues] = useState(getInitialFormValues());
   const handleChange = (e) => {
-    const {name, value} = e.target;
-    setFormValues(previousFormValues => {
+    const { name, value } = e.target;
+    setFormValues((previousFormValues) => {
       const error = validate(value, name, previousFormValues);
       return {
-      ...formValues,
+        ...formValues,
         [name]: {
           value,
-          error
-        }
-      }
-    })
-  }
+          error,
+        },
+      };
+    });
+  };
 
-return (
+  return (
     <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 10 }}>
+      <Container
+        component="main"
+        maxWidth="xs"
+        style={{ backgroundColor: "white", borderRadius: 10 }}
+      >
         <CssBaseline />
 
         <Box
           sx={{
             marginTop: 8,
             paddingTop: 5,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar className='' sx={{ m: 1, bgcolor: '#ff895d' }}>
-          </Avatar>
+          <Avatar className="" sx={{ m: 1, bgcolor: "#ff895d" }}></Avatar>
           <Typography component="h1" variant="h4">
             Sign up
           </Typography>
@@ -181,7 +187,10 @@ return (
                   value={formValues[fieldNames.FIRST_NAME].value}
                   onChange={handleChange}
                   error={formValues[fieldNames.FIRST_NAME].error}
-                  helperText={formValues[fieldNames.FIRST_NAME].error && 'Invalid first name'}
+                  helperText={
+                    formValues[fieldNames.FIRST_NAME].error &&
+                    "Invalid first name"
+                  }
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
@@ -195,7 +204,10 @@ return (
                   value={formValues[fieldNames.LAST_NAME].value}
                   onChange={handleChange}
                   error={formValues[fieldNames.LAST_NAME].error}
-                  helperText={formValues[fieldNames.LAST_NAME].error && 'Invalid last name'}
+                  helperText={
+                    formValues[fieldNames.LAST_NAME].error &&
+                    "Invalid last name"
+                  }
                 />
               </Grid>
               <Grid item xs={12}>
@@ -208,13 +220,15 @@ return (
                   value={formValues[fieldNames.EMAIL].value}
                   onChange={handleChange}
                   error={formValues[fieldNames.EMAIL].error}
-                  helperText={formValues[fieldNames.EMAIL].error && 'Invalid email'}
-                //autoComplete="email"
-                // value={value}
-                //onChange={onChange}
-                //error={formValues.email.error}
-                //helperText="some validation error"
-                //type="email"
+                  helperText={
+                    formValues[fieldNames.EMAIL].error && "Invalid email"
+                  }
+                  //autoComplete="email"
+                  // value={value}
+                  //onChange={onChange}
+                  //error={formValues.email.error}
+                  //helperText="some validation error"
+                  //type="email"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -228,7 +242,9 @@ return (
                   value={formValues[fieldNames.PASSWORD].value}
                   onChange={handleChange}
                   error={formValues[fieldNames.PASSWORD].error}
-                  helperText={formValues[fieldNames.PASSWORD].error && 'Invalid password'}
+                  helperText={
+                    formValues[fieldNames.PASSWORD].error && "Invalid password"
+                  }
                   //autoComplete="new-password"
                 />
               </Grid>
@@ -243,7 +259,10 @@ return (
                   value={formValues[fieldNames.PASSWORD2].value}
                   onChange={handleChange}
                   error={formValues[fieldNames.PASSWORD2].error}
-                  helperText={formValues[fieldNames.PASSWORD2].error && "Passwords don't match"}
+                  helperText={
+                    formValues[fieldNames.PASSWORD2].error &&
+                    "Passwords don't match"
+                  }
                   //autoComplete="new-password"
                 />
               </Grid>
@@ -262,7 +281,10 @@ return (
                   label="First Name"
                   onChange={handleChange}
                   error={formValues[fieldNames.PARTNER_FIRST_NAME].error}
-                  helperText={formValues[fieldNames.PARTNER_FIRST_NAME].error && 'Invalid first name'}
+                  helperText={
+                    formValues[fieldNames.PARTNER_FIRST_NAME].error &&
+                    "Invalid first name"
+                  }
                   //autoFocus
                 />
               </Grid>
@@ -274,8 +296,11 @@ return (
                   label="Last Name"
                   onChange={handleChange}
                   error={formValues[fieldNames.PARTNER_LAST_NAME].error}
-                  helperText={formValues[fieldNames.PARTNER_LAST_NAME].error && 'Invalid last name'}
-                //autoComplete="family-name"
+                  helperText={
+                    formValues[fieldNames.PARTNER_LAST_NAME].error &&
+                    "Invalid last name"
+                  }
+                  //autoComplete="family-name"
                 />
               </Grid>
               <Grid item xs={12}>
@@ -286,8 +311,11 @@ return (
                   label="Email Address"
                   onChange={handleChange}
                   error={formValues[fieldNames.PARTNER_EMAIL].error}
-                  helperText={formValues[fieldNames.PARTNER_EMAIL].error && 'Invalid email'}
-                //autoComplete="email"
+                  helperText={
+                    formValues[fieldNames.PARTNER_EMAIL].error &&
+                    "Invalid email"
+                  }
+                  //autoComplete="email"
                 />
               </Grid>
 
@@ -317,7 +345,8 @@ return (
               type="submit"
               fullWidth
               variant="contained"
-              sx={{ mt: 3, mb: 2 }}>
+              sx={{ mt: 3, mb: 2 }}
+            >
               Sign Up
             </Button>
             <Grid container justifyContent="flex-end">
@@ -331,11 +360,11 @@ return (
         </Box>
         <Copyright sx={{ mt: 5, paddingBottom: 3 }} />
       </Container>
-
     </ThemeProvider>
   );
-}   
-{/* <Box component="form" form onSubmit={handleSubmit(on2Submit)} mb={2}>
+}
+{
+  /* <Box component="form" form onSubmit={handleSubmit(on2Submit)} mb={2}>
 <TextField
   variant="outlined"
   label="email"
@@ -355,8 +384,8 @@ return (
 </Box>
 <Button type="submit" variant="contained" color="primary" fullWidth>
 Login In / Sign Up
-</Button> */}
-
+</Button> */
+}
 
 // const on2Submit = (data) => console.log(data);
 
