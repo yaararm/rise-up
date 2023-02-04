@@ -14,6 +14,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./SignUp.css";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { Formik, Field, FieldArray } from "formik";
 //import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 function Copyright(props) {
@@ -54,21 +55,21 @@ const fieldNames = {
   EMAIL: "email",
   PASSWORD: "password",
   PASSWORD2: "password2",
-  PARTNER_FIRST_NAME: "partnerFirstName",
-  PARTNER_LAST_NAME: "partnerLastName",
-  PARTNER_EMAIL: "partnerEmail",
+  // PARTNER_FIRST_NAME: "partnerFirstName",
+  // PARTNER_LAST_NAME: "partnerLastName",
+  // PARTNER_EMAIL: "partnerEmail",
 };
 
 function validate(value, fieldName, formValues = {}) {
   switch (fieldName) {
     case fieldNames.FIRST_NAME:
-    case fieldNames.PARTNER_FIRST_NAME:
+    // case fieldNames.PARTNER_FIRST_NAME:
       return isValidName(value);
     case fieldNames.LAST_NAME:
-    case fieldNames.PARTNER_LAST_NAME:
+    // case fieldNames.PARTNER_LAST_NAME:
       return isValidName(value);
     case fieldNames.EMAIL:
-    case fieldNames.PARTNER_EMAIL:
+    // case fieldNames.PARTNER_EMAIL:
       return isValidEmail(value);
     case fieldNames.PASSWORD2:
       return !isEqualPassword(value, formValues[fieldNames.PASSWORD].value);
@@ -85,6 +86,12 @@ function getInitialFormValues() {
 }
 
 export default function SignUp() {
+  const partnersGroup = {
+    partnerFirstName: "",
+    partnerLastName: "",
+    partnerEmail: "",
+  };
+
   const onSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -266,12 +273,85 @@ export default function SignUp() {
                   //autoComplete="new-password"
                 />
               </Grid>
-
-              <Grid item sx={{ width: "auto" }} sm={12} align="center">
-                <Typography component="h2" variant="body2">
-                  Add another account (optional):
-                </Typography>
-              </Grid>
+              <Formik
+                initialValues={{
+                  partners: [partnersGroup],
+                }}
+                onSubmit={async (values, actions) => {
+                  alert(JSON.stringify(values, null, 2));
+                }}
+              >
+                {({ values }) => (
+                  <FieldArray name="partners">
+                    {({ push, remove }) => (
+                      <Grid
+                        container
+                        spacing={2}
+                        sx={{ marginTop: 2, paddingX: 2 }}
+                      >
+                        <Grid
+                          item
+                          sx={{ width: "auto" }}
+                          sm={12}
+                          align="center"
+                        >
+                          <Typography component="h2" variant="h6">
+                            Add Account Partners: (optional)
+                          </Typography>
+                        </Grid>
+                        {values.partners.map((_, index) => (
+                          <>
+                            <Grid item xs={12} sm={6}>
+                              <Field
+                                fullWidth
+                                name={`partners.${index}.partnerFirstName`}
+                                component={TextField}
+                                label="First Name"
+                              />
+                            </Grid>
+                            <Grid item xs={12} sm={6}>
+                              <Field
+                                fullWidth
+                                name={`partners.${index}.partnerLastName`}
+                                component={TextField}
+                                label="Last Name"
+                              />
+                            </Grid>
+                            <Grid item xs={12}>
+                              <Field
+                                fullWidth
+                                name={`partners.${index}.partnerEmail`}
+                                component={TextField}
+                                label="Email Address"
+                              />
+                            </Grid>
+                            {index > 0 && (
+                              <Grid item md={2}>
+                                <Button
+                                  variant="outlined"
+                                  color="error"
+                                  onClick={() => remove(index)}
+                                >
+                                  Delete
+                                </Button>
+                              </Grid>
+                            )}
+                          </>
+                        ))}{" "}
+                        <Grid item xs={12}>
+                          <Button
+                            variant="outlined"
+                            onClick={() => push(partnersGroup)}
+                          >
+                            Add Another Partner
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    )}
+                  </FieldArray>
+                )}
+              </Formik>
+{/*
               <Grid item xs={12} sm={6}>
                 <TextField
                   //autoComplete="given-name"
@@ -318,7 +398,7 @@ export default function SignUp() {
                   //autoComplete="email"
                 />
               </Grid>
-
+*/} 
               {/*<Grid item sx={{ width: "auto" }} sm={12} align="center">
                 <Typography component="h2" variant="body2">
                   Intrested in shared account?
