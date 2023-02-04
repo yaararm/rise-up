@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -13,7 +11,6 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./SignUp.css";
 import { useState } from "react";
-import { useForm } from "react-hook-form";
 import { Formik, Field, FieldArray } from "formik";
 //import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
@@ -325,7 +322,7 @@ export default function SignUp() {
                                 label="Email Address"
                               />
                             </Grid>
-                            {index > 0 && (
+                            {/*{index > 0 && (
                               <Grid item md={2}>
                                 <Button
                                   variant="outlined"
@@ -335,7 +332,7 @@ export default function SignUp() {
                                   Delete
                                 </Button>
                               </Grid>
-                            )}
+                            )}*/}
                           </>
                         ))}{" "}
                         <Grid item xs={12}>
