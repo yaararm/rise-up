@@ -188,9 +188,6 @@ export default function SignUp() {
                             spacing={2}
                             sx={{ marginTop: 2, paddingX: 2 }}
                           >
-                            Add Another Account Partner
-                          </Button>
-                        </Grid>
                             {values.partners.map((_, index) => (
                               <>
                                 <Grid item xs={12} sm={6}>
