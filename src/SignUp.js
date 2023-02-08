@@ -272,7 +272,7 @@ export default function SignUp() {
               </Grid>
               <Formik
                 initialValues={{
-                  partners: [partnersGroup],
+                  partners: [],
                 }}
                 onSubmit={async (values, actions) => {
                   alert(JSON.stringify(values, null, 2));
@@ -286,7 +286,7 @@ export default function SignUp() {
                         spacing={2}
                         sx={{ marginTop: 2, paddingX: 2 }}
                       >
-                        <Grid
+                        {/*<Grid
                           item
                           sx={{ width: "auto" }}
                           sm={12}
@@ -295,9 +295,10 @@ export default function SignUp() {
                           <Typography component="h2" variant="h6">
                             Add Account Partners: (optional)
                           </Typography>
-                        </Grid>
+                    </Grid>*/}
                         {values.partners.map((_, index) => (
                           <>
+                          
                             <Grid item xs={12} sm={6}>
                               <Field
                                 fullWidth
@@ -314,7 +315,7 @@ export default function SignUp() {
                                 label="Last Name"
                               />
                             </Grid>
-                            <Grid item xs={12}>
+                            <Grid item xs={12} sm={9}>
                               <Field
                                 fullWidth
                                 name={`partners.${index}.partnerEmail`}
@@ -322,8 +323,7 @@ export default function SignUp() {
                                 label="Email Address"
                               />
                             </Grid>
-                            {/*{index > 0 && (
-                              <Grid item md={2}>
+                            <Grid item xs={12} sm={3}>
                                 <Button
                                   variant="outlined"
                                   color="error"
@@ -331,8 +331,7 @@ export default function SignUp() {
                                 >
                                   Delete
                                 </Button>
-                              </Grid>
-                            )}*/}
+                            </Grid>
                           </>
                         ))}{" "}
                         <Grid item xs={12}>
@@ -340,7 +339,7 @@ export default function SignUp() {
                             variant="outlined"
                             onClick={() => push(partnersGroup)}
                           >
-                            Add Another Partner
+                            Add Another Account Partner
                           </Button>
                         </Grid>
                       </Grid>
