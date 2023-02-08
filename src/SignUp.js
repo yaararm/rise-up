@@ -12,7 +12,6 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./SignUp.css";
 import { useState } from "react";
 import { Formik, Field, FieldArray } from "formik";
-//import { DesktopDatePicker } from '@mui/x-date-pickers/DesktopDatePicker';
 
 function Copyright(props) {
   return (
@@ -82,34 +81,12 @@ function getInitialFormValues() {
   }, {});
 }
 
-const validationSchema = yup.object({
-  email: yup
-    .string('Enter your email')
-    .email('Enter a valid email')
-    .required('Email is required'),
-  password: yup
-    .string('Enter your password')
-    .min(8, 'Password should be of minimum 8 characters length')
-    .required('Password is required'),
-});
-
 export default function SignUp() {
   const partnersGroup = {
     partnerFirstName: "",
     partnerLastName: "",
     partnerEmail: "",
   };
-
-  const formik = useFormik({
-    initialValues: {
-      email: 'foobar@example.com',
-      password: 'foobar',
-    },
-    validationSchema: validationSchema,
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-  }); 
 
   const onSubmit = (event) => {
     event.preventDefault();
@@ -461,34 +438,3 @@ export default function SignUp() {
     </ThemeProvider>
   );
 }
-{
-  /* <Box component="form" form onSubmit={handleSubmit(on2Submit)} mb={2}>
-<TextField
-  variant="outlined"
-  label="email"
-  fullWidth
-  autoComplete="email"
-  autoFocus
-  {...register("email", {
-    required: "Required field",
-    pattern: {
-      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-      message: "Invalid email address",
-    },
-  })}
-  error={!!errors?.email}
-  helperText={errors?.email ? errors.email.message : null}
-/>
-</Box>
-<Button type="submit" variant="contained" color="primary" fullWidth>
-Login In / Sign Up
-</Button> */
-}
-
-// const on2Submit = (data) => console.log(data);
-
-//   const {
-//     register,
-//     handleSubmit,
-//     formState: { errors },
-//   } = useForm();

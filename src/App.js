@@ -5,10 +5,11 @@ import EditInformation from './EditInformation'
 
 function App() {
   return (
-    //<div className="back" style={{ height: '100%', position: 'absolute', left: '0px', width: '100%', overflow: 'hidden', overflowY:"scroll"}}>
-    <EditInformation/>
-    //<SignIn/>
-  //</div>
+    // <div className="back" style={{ height: '100%', position: 'absolute', left: '0px', width: '100%', overflow: 'hidden', overflowY:"scroll"}}>
+    // <EditInformation/>
+    // <SignIn/>
+    <SignUp/>
+  // </div>
   );
 }
 
