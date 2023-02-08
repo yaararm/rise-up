@@ -92,10 +92,6 @@ export default function SignUp() {
       console.log("last name contained numeric")
     }
 
-    if (!isValidEmail(data.get(fieldNames.EMAIL))){
-      console.log( "email is invalid" )
-    }
-
     if (!isEqualPassword(data.get(fieldNames.PASSWORD),data.get(fieldNames.PASSWORD2))){
       console.log( "password not alike" )
     }
@@ -131,6 +127,7 @@ export default function SignUp() {
 
 return (
     <ThemeProvider theme={theme}>
+    <div className="back" style={{ height: '100%', position: 'absolute', left: '0px', width: '100%', overflow: 'hidden', overflowY:"scroll"}}>
       <Container component="main" maxWidth="xs" style={{ backgroundColor: 'white', borderRadius: 10 }}>
         <CssBaseline />
 
@@ -143,7 +140,7 @@ return (
             alignItems: 'center',
           }}
         >
-          <Avatar className='' sx={{ m: 1, bgcolor: '#ff895d' }}>
+          <Avatar className='fourth' sx={{ m: 1, bgcolor: '#ff895d' }}>
           </Avatar>
           <Typography component="h1" variant="h4">
             Sign up
@@ -319,7 +316,7 @@ return (
         </Box>
         <Copyright sx={{ mt: 5, paddingBottom: 3 }} />
       </Container>
-
+      </div>
     </ThemeProvider>
   );
 }   
