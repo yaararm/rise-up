@@ -52,35 +52,6 @@ function getInitialFormValues() {
   }, {});
 }
 const validationSchema = Yup.object().shape({
-  // account: Yup.string()
-  //   .min(2, "Account Name is too short")
-  //   .max(50, "Account Name is too long")
-  //   .required("Required"),
-  // firstName: Yup.string()
-  //   .min(2, "First Name is too short")
-  //   .max(50, "First Name is too long")
-  //   .required("Required"),
-  // lastName: Yup.string()
-  //   .min(2, "Last Name is too short")
-  //   .max(50, "Last Name is too long")
-  //   .required("Required"),
-  // password: Yup.string()
-  //   .min(2, "Password is too short")
-  //   .max(50, "Password is too long")
-  //   .required("Required"),
-  // confirmPassword: Yup.string()
-  //   .oneOf([Yup.ref("password"), null], "Passwords must match")
-  //   .required("Required"),
-  partners: Yup.array(
-    Yup.object({
-      partnerFirstName: Yup.string().required("First Name is required"),
-      partnerLastName: Yup.string().required("Last Name is required"),
-      partnerEmail: Yup.string().required("Email is required"),
-    })
-  ),
-});
-
-const SignupSchema = Yup.object().shape({
   account: Yup.string()
     .min(2, "Account Name is too short")
     .max(50, "Account Name is too long")
@@ -93,6 +64,7 @@ const SignupSchema = Yup.object().shape({
     .min(2, "Last Name is too short")
     .max(50, "Last Name is too long")
     .required("Required"),
+  email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string()
     .min(2, "Password is too short")
     .max(50, "Password is too long")
@@ -100,7 +72,13 @@ const SignupSchema = Yup.object().shape({
   confirmPassword: Yup.string()
     .oneOf([Yup.ref("password"), null], "Passwords must match")
     .required("Required"),
-  email: Yup.string().email("Invalid email").required("Required"),
+  partners: Yup.array(
+    Yup.object({
+      partnerFirstName: Yup.string().required("Required"),
+      partnerLastName: Yup.string().required("Required"),
+      partnerEmail: Yup.string().email("Invalid email").required("Required"),
+    })
+  ),
 });
 
 export default function SignUp() {
@@ -137,155 +115,143 @@ export default function SignUp() {
           </Typography>
 
           <Box sx={{ mt: 3 }}>
-            <Formik
-              initialValues={{
-                account: "",
-                firstName: "",
-                lastName: "",
-                password: "",
-                confirmPassword: "",
-              }}
-              validationSchema={SignupSchema}
-              onSubmit={(values, { setSubmitting }) => {
-                setTimeout(() => {
-                  setSubmitting(false);
+            <Grid container spacing={2}>
+              <Formik
+                initialValues={{
+                  account: "",
+                  firstName: "",
+                  lastName: "",
+                  password: "",
+                  confirmPassword: "",
+                  partners: [],
+                }}
+                validationSchema={validationSchema}
+                onSubmit={async (values, actions) => {
                   alert(JSON.stringify(values, null, 2));
-                }, 500);
-              }}
-            >
-              <Form>
-                <Grid container spacing={2}>
-                  <Grid item xs={12}>
-                    <Field
-                      component={TextField}
-                      name="account"
-                      label="Account Name"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Field
-                      component={TextField}
-                      name="firstName"
-                      label="First Name"
-                    />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Field
-                      component={TextField}
-                      name="lastName"
-                      label="Last Name"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      component={TextField}
-                      name="email"
-                      label="Email Address"
-                      type="email"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      component={TextField}
-                      name="password"
-                      label="Password"
-                      type="password"
-                    />
-                  </Grid>
-                  <Grid item xs={12}>
-                    <Field
-                      component={TextField}
-                      name="confirmPassword"
-                      label="Confirm Password"
-                      type="password"
-                    />
-                  </Grid>
-                  <Formik
-                    initialValues={{
-                      partners: [],
-                    }}
-                    validationSchema={validationSchema}
-                    onSubmit={async (values, actions) => {
-                      alert(JSON.stringify(values, null, 2));
-                    }}
-                  >
-                    {({ values }) => (
-                      <FieldArray name="partners">
-                        {({ push, remove }) => (
-                          <Grid
-                            container
-                            spacing={2}
-                            sx={{ marginTop: 2, paddingX: 2 }}
-                          >
-                            {values.partners.map((_, index) => (
-                              <>
-                                <Grid item xs={12} sm={6}>
-                                  <Field
-                                    fullWidth
-                                    name={`partners.${index}.partnerFirstName`}
-                                    component={TextField}
-                                    label="First Name"
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={6}>
-                                  <Field
-                                    fullWidth
-                                    name={`partners.${index}.partnerLastName`}
-                                    component={TextField}
-                                    label="Last Name"
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={9}>
-                                  <Field
-                                    fullWidth
-                                    name={`partners.${index}.partnerEmail`}
-                                    component={TextField}
-                                    label="Email Address"
-                                  />
-                                </Grid>
-                                <Grid item xs={12} sm={3}>
-                                  <Button
-                                    variant="outlined"
-                                    color="error"
-                                    onClick={() => remove(index)}
-                                  >
-                                    Delete
-                                  </Button>
-                                </Grid>
-                              </>
-                            ))}{" "}
-                            <Grid item xs={12}>
-                              <Button
-                                variant="outlined"
-                                onClick={() => push(partnersGroup)}
-                              >
-                                Add Another Account Partner
-                              </Button>
-                            </Grid>
+                }}
+              >
+                {({ values }) => (
+                  <Grid container spacing={2}>
+                    <Grid item xs={12}>
+                      <Field
+                        component={TextField}
+                        name="account"
+                        label="Account Name"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        component={TextField}
+                        name="firstName"
+                        label="First Name"
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Field
+                        component={TextField}
+                        name="lastName"
+                        label="Last Name"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        component={TextField}
+                        name="email"
+                        label="Email Address"
+                        type="email"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        component={TextField}
+                        name="password"
+                        label="Password"
+                        type="password"
+                      />
+                    </Grid>
+                    <Grid item xs={12}>
+                      <Field
+                        component={TextField}
+                        name="confirmPassword"
+                        label="Confirm Password"
+                        type="password"
+                      />
+                    </Grid>
+                    <FieldArray name="partners">
+                      {({ push, remove }) => (
+                        <Grid
+                          container
+                          spacing={2}
+                          sx={{ marginTop: 2, paddingX: 2 }}
+                        >
+                          {values.partners.map((_, index) => (
+                            <>
+                              <Grid item xs={12} sm={6}>
+                                <Field
+                                  fullWidth
+                                  name={`partners.${index}.partnerFirstName`}
+                                  component={TextField}
+                                  label="First Name"
+                                />
+                              </Grid>
+                              <Grid item xs={12} sm={6}>
+                                <Field
+                                  fullWidth
+                                  name={`partners.${index}.partnerLastName`}
+                                  component={TextField}
+                                  label="Last Name"
+                                />
+                              </Grid>
+                              <Grid item xs={12} sm={9}>
+                                <Field
+                                  fullWidth
+                                  name={`partners.${index}.partnerEmail`}
+                                  component={TextField}
+                                  label="Email Address"
+                                />
+                              </Grid>
+                              <Grid item xs={12} sm={3}>
+                                <Button
+                                  variant="outlined"
+                                  color="error"
+                                  onClick={() => remove(index)}
+                                >
+                                  Delete
+                                </Button>
+                              </Grid>
+                            </>
+                          ))}{" "}
+                          <Grid item xs={12}>
+                            <Button
+                              variant="outlined"
+                              onClick={() => push(partnersGroup)}
+                            >
+                              Add Another Account Partner
+                            </Button>
                           </Grid>
-                        )}
-                      </FieldArray>
-                    )}
-                  </Formik>
-                </Grid>
-
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="contained"
-                  sx={{ mt: 3, mb: 2 }}
-                >
-                  Sign Up
-                </Button>
-                <Grid container justifyContent="flex-end">
-                  <Grid item>
-                    <Link href="#" variant="body2">
-                      Already have an account? Sign in
-                    </Link>
+                        </Grid>
+                      )}
+                    </FieldArray>
+                    <Button
+                      type="submit"
+                      fullWidth
+                      variant="contained"
+                      sx={{ mt: 3, mb: 2 }}
+                    >
+                      Sign Up
+                    </Button>
                   </Grid>
-                </Grid>
-              </Form>
-            </Formik>
+                )}
+              </Formik>
+            </Grid>
+
+            <Grid container justifyContent="flex-end">
+              <Grid item>
+                <Link href="#" variant="body2">
+                  Already have an account? Sign in
+                </Link>
+              </Grid>
+            </Grid>
           </Box>
         </Box>
 
