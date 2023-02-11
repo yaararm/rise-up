@@ -51,6 +51,34 @@ function getInitialFormValues() {
     return state;
   }, {});
 }
+const validationSchema = Yup.object().shape({
+  // account: Yup.string()
+  //   .min(2, "Account Name is too short")
+  //   .max(50, "Account Name is too long")
+  //   .required("Required"),
+  // firstName: Yup.string()
+  //   .min(2, "First Name is too short")
+  //   .max(50, "First Name is too long")
+  //   .required("Required"),
+  // lastName: Yup.string()
+  //   .min(2, "Last Name is too short")
+  //   .max(50, "Last Name is too long")
+  //   .required("Required"),
+  // password: Yup.string()
+  //   .min(2, "Password is too short")
+  //   .max(50, "Password is too long")
+  //   .required("Required"),
+  // confirmPassword: Yup.string()
+  //   .oneOf([Yup.ref("password"), null], "Passwords must match")
+  //   .required("Required"),
+  partners: Yup.array(
+    Yup.object({
+      partnerFirstName: Yup.string().required("First Name is required"),
+      partnerLastName: Yup.string().required("Last Name is required"),
+      partnerEmail: Yup.string().required("Email is required"),
+    })
+  ),
+});
 
 const SignupSchema = Yup.object().shape({
   account: Yup.string()
@@ -176,6 +204,7 @@ export default function SignUp() {
                     initialValues={{
                       partners: [],
                     }}
+                    validationSchema={validationSchema}
                     onSubmit={async (values, actions) => {
                       alert(JSON.stringify(values, null, 2));
                     }}
