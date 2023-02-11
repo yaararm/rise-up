@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import "./SignUp.css";
-import { useState } from "react";
 import { Form, Formik, Field, FieldArray } from "formik";
 import { TextField } from "formik-mui";
 import * as Yup from "yup";
@@ -34,23 +33,6 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const fieldNames = {
-  FIRST_NAME: "firstName",
-  LAST_NAME: "lastName",
-  EMAIL: "email",
-  PASSWORD: "password",
-  PASSWORD2: "password2",
-  // PARTNER_FIRST_NAME: "partnerFirstName",
-  // PARTNER_LAST_NAME: "partnerLastName",
-  // PARTNER_EMAIL: "partnerEmail",
-};
-
-function getInitialFormValues() {
-  return Object.values(fieldNames).reduce((state, fieldName) => {
-    state[fieldName] = { value: "", error: false };
-    return state;
-  }, {});
-}
 const validationSchema = Yup.object().shape({
   account: Yup.string()
     .min(2, "Account Name is too short")
@@ -87,9 +69,6 @@ export default function SignUp() {
     partnerLastName: "",
     partnerEmail: "",
   };
-
-  //TODO handle this according to Formik examples
-  const [formValues, setFormValues] = useState(getInitialFormValues());
 
   return (
     <ThemeProvider theme={theme}>
