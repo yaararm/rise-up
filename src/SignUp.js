@@ -33,7 +33,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-const nameRegex = /^[A-Za-z]+$/;
+const nameRegex = /^[A-Za-z ]+$/;
 
 const validationSchema = Yup.object().shape({
   account: Yup.string()
