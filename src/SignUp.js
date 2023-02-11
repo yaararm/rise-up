@@ -197,6 +197,7 @@ export default function SignUp() {
                                     name={`partners.${index}.partnerEmail`}
                                     component={TextField}
                                     label="Email Address"
+                                    type="email"
                                   />
                                 </Grid>
                                 <Grid item xs={12} sm={3}>
