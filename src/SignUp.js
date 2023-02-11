@@ -121,126 +121,134 @@ export default function SignUp() {
                   account: "",
                   firstName: "",
                   lastName: "",
+                  email: "",
                   password: "",
                   confirmPassword: "",
                   partners: [],
                 }}
                 validationSchema={validationSchema}
-                onSubmit={async (values, actions) => {
-                  alert(JSON.stringify(values, null, 2));
+                onSubmit={(values, { setSubmitting }) => {
+                  setTimeout(() => {
+                    alert(JSON.stringify(values, null, 2));
+                    setSubmitting(false);
+                  }, 400);
                 }}
               >
                 {({ values }) => (
-                  <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                      <Field
-                        component={TextField}
-                        name="account"
-                        label="Account Name"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Field
-                        component={TextField}
-                        name="firstName"
-                        label="First Name"
-                      />
-                    </Grid>
-                    <Grid item xs={12} sm={6}>
-                      <Field
-                        component={TextField}
-                        name="lastName"
-                        label="Last Name"
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Field
-                        component={TextField}
-                        name="email"
-                        label="Email Address"
-                        type="email"
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Field
-                        component={TextField}
-                        name="password"
-                        label="Password"
-                        type="password"
-                      />
-                    </Grid>
-                    <Grid item xs={12}>
-                      <Field
-                        component={TextField}
-                        name="confirmPassword"
-                        label="Confirm Password"
-                        type="password"
-                      />
-                    </Grid>
-                    <FieldArray name="partners">
-                      {({ push, remove }) => (
-                        <Grid
-                          container
-                          spacing={2}
-                          sx={{ marginTop: 2, paddingX: 2 }}
-                        >
-                          {values.partners.map((_, index) => (
-                            <>
-                              <Grid item xs={12} sm={6}>
-                                <Field
-                                  fullWidth
-                                  name={`partners.${index}.partnerFirstName`}
-                                  component={TextField}
-                                  label="First Name"
-                                />
-                              </Grid>
-                              <Grid item xs={12} sm={6}>
-                                <Field
-                                  fullWidth
-                                  name={`partners.${index}.partnerLastName`}
-                                  component={TextField}
-                                  label="Last Name"
-                                />
-                              </Grid>
-                              <Grid item xs={12} sm={9}>
-                                <Field
-                                  fullWidth
-                                  name={`partners.${index}.partnerEmail`}
-                                  component={TextField}
-                                  label="Email Address"
-                                />
-                              </Grid>
-                              <Grid item xs={12} sm={3}>
-                                <Button
-                                  variant="outlined"
-                                  color="error"
-                                  onClick={() => remove(index)}
-                                >
-                                  Delete
-                                </Button>
-                              </Grid>
-                            </>
-                          ))}{" "}
-                          <Grid item xs={12}>
-                            <Button
-                              variant="outlined"
-                              onClick={() => push(partnersGroup)}
-                            >
-                              Add Another Account Partner
-                            </Button>
+                  <Form>
+                    <Grid container spacing={2}>
+                    
+                      <Grid item xs={12}>
+                        <Field
+                          component={TextField}
+                          name="account"
+                          label="Account Name"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field
+                          component={TextField}
+                          name="firstName"
+                          label="First Name"
+                        />
+                      </Grid>
+                      <Grid item xs={12} sm={6}>
+                        <Field
+                          component={TextField}
+                          name="lastName"
+                          label="Last Name"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Field
+                          component={TextField}
+                          name="email"
+                          label="Email Address"
+                          type="email"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Field
+                          component={TextField}
+                          name="password"
+                          label="Password"
+                          type="password"
+                        />
+                      </Grid>
+                      <Grid item xs={12}>
+                        <Field
+                          component={TextField}
+                          name="confirmPassword"
+                          label="Confirm Password"
+                          type="password"
+                        />
+                      </Grid>
+                      <FieldArray name="partners">
+                        {({ push, remove }) => (
+                          <Grid
+                            container
+                            spacing={2}
+                            sx={{ marginTop: 2, paddingX: 2 }}
+                          >
+                            {values.partners.map((_, index) => (
+                              <>
+                                <Grid item xs={12} sm={6}>
+                                  <Field
+                                    fullWidth
+                                    name={`partners.${index}.partnerFirstName`}
+                                    component={TextField}
+                                    label="First Name"
+                                  />
+                                </Grid>
+                                <Grid item xs={12} sm={6}>
+                                  <Field
+                                    fullWidth
+                                    name={`partners.${index}.partnerLastName`}
+                                    component={TextField}
+                                    label="Last Name"
+                                  />
+                                </Grid>
+                                <Grid item xs={12} sm={9}>
+                                  <Field
+                                    fullWidth
+                                    name={`partners.${index}.partnerEmail`}
+                                    component={TextField}
+                                    label="Email Address"
+                                  />
+                                </Grid>
+                                <Grid item xs={12} sm={3}>
+                                  <Button
+                                    variant="outlined"
+                                    color="error"
+                                    onClick={() => remove(index)}
+                                  >
+                                    Delete
+                                  </Button>
+                                </Grid>
+                              </>
+                            ))}{" "}
+                            <Grid item xs={12}>
+                              <Button
+                                variant="outlined"
+                                onClick={() => push(partnersGroup)}
+                              >
+                                Add Another Account Partner
+                              </Button>
+                            </Grid>
                           </Grid>
-                        </Grid>
-                      )}
-                    </FieldArray>
-                    <Button
-                      type="submit"
-                      fullWidth
-                      variant="contained"
-                      sx={{ mt: 3, mb: 2 }}
-                    >
-                      Sign Up
-                    </Button>
-                  </Grid>
+                        )}
+                      </FieldArray>
+                      <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        sx={{ mt: 3, mb: 2 }}
+                      >
+                        Sign Up
+                      </Button>
+                      
+                    </Grid>
+                    </Form>
                 )}
               </Formik>
             </Grid>
