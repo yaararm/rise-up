@@ -33,22 +33,27 @@ function Copyright(props) {
 
 const theme = createTheme();
 
+const nameRegex = /^[A-Za-z]+$/;
+
 const validationSchema = Yup.object().shape({
   account: Yup.string()
+  .matches(nameRegex, "Only English letters")
     .min(2, "Account Name is too short")
     .max(50, "Account Name is too long")
     .required("Required"),
   firstName: Yup.string()
+  .matches(nameRegex, "Only English letters")
     .min(2, "First Name is too short")
     .max(50, "First Name is too long")
     .required("Required"),
   lastName: Yup.string()
+  .matches(nameRegex, "Only English letters")
     .min(2, "Last Name is too short")
     .max(50, "Last Name is too long")
     .required("Required"),
   email: Yup.string().email("Invalid email").required("Required"),
   password: Yup.string()
-    .min(2, "Password is too short")
+    .min(4, "Password is too short")
     .max(50, "Password is too long")
     .required("Required"),
   confirmPassword: Yup.string()
@@ -56,8 +61,8 @@ const validationSchema = Yup.object().shape({
     .required("Required"),
   partners: Yup.array(
     Yup.object({
-      partnerFirstName: Yup.string().required("Required"),
-      partnerLastName: Yup.string().required("Required"),
+      partnerFirstName: Yup.string().matches(nameRegex, "Only English letters").required("Required"),
+      partnerLastName: Yup.string().matches(nameRegex, "Only English letters").required("Required"),
       partnerEmail: Yup.string().email("Invalid email").required("Required"),
     })
   ),
@@ -116,7 +121,6 @@ export default function SignUp() {
                 {({ values }) => (
                   <Form>
                     <Grid container spacing={2}>
-                    
                       <Grid item xs={12}>
                         <Field
                           component={TextField}
@@ -225,9 +229,8 @@ export default function SignUp() {
                       >
                         Sign Up
                       </Button>
-                      
                     </Grid>
-                    </Form>
+                  </Form>
                 )}
               </Formik>
             </Grid>
@@ -243,7 +246,7 @@ export default function SignUp() {
         </Box>
 
         <Copyright sx={{ mt: 5, paddingBottom: 3 }} />
-      </Container>
+      </Container> 
     </ThemeProvider>
   );
 }
